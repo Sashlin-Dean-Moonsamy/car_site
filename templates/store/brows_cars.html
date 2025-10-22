@@ -17,7 +17,7 @@
         <div class="card-body">
           <h5 class="card-title">{{ car.make }} {{ car.model }} ({{ car.year }})</h5>
           <p class="card-text text-muted">${{ car.price }}</p>
-          <a href="{% url 'car_detail' car.id %}" class="btn btn-outline-primary btn-sm">View Details</a>
+          <a href="{% url 'store:car_detail' car.id %}" class="btn btn-outline-primary btn-sm">View Details</a>
         </div>
       </div>
     </div>
