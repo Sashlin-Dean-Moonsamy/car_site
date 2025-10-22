@@ -16,4 +16,4 @@ if not User.objects.filter(username="batman").exists():
 EOF
 
 echo "Starting Gunicorn server..."
-gunicorn ecommerce.wsgi:application
+gunicorn car_site.wsgi:application
