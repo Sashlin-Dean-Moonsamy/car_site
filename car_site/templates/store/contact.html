@@ -1,0 +1,26 @@
+{% extends 'store.html' %}
+{% load static %}
+{% block title %}Contact Us{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Contact Us</h1>
+
+{% if success %}
+  <div class="alert alert-success">
+    Thank you! Your message has been sent.
+  </div>
+{% endif %}
+
+<form method="post" class="mb-5">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit" class="btn btn-primary">Send Message</button>
+</form>
+
+<div class="mt-5">
+  <h5>Our Contact Info</h5>
+  <p>Email: test.email@gmail.com</p>
+  <p>Phone: 5625541871</p>
+  <p>Address: 123 Main Street, Your City</p>
+</div>
+{% endblock %}

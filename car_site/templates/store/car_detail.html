@@ -1,0 +1,52 @@
+{% extends 'store.html' %}
+{% load static %}
+{% block title %}{{ car.make }} {{ car.model }}{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-6">
+    <!-- Image Carousel -->
+    <div id="carCarousel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        {% for image in car.images.all %}
+          <div class="carousel-item {% if forloop.first %}active{% endif %}">
+            <img src="{{ image.image.url }}" class="d-block w-100" alt="{{ car.title }}">
+          </div>
+        {% empty %}
+          <div class="carousel-item active">
+            <img src="{% static 'images/default_car.jpg' %}" class="d-block w-100" alt="No Image">
+          </div>
+        {% endfor %}
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <h2>{{ car.make }} {{ car.model }} ({{ car.year }})</h2>
+    <p class="text-muted">${{ car.price }}</p>
+    <ul class="list-group list-group-flush mb-3">
+      <li class="list-group-item"><strong>Mileage:</strong> {{ car.mileage|default:"N/A" }} km</li>
+      <li class="list-group-item"><strong>Transmission:</strong> {{ car.transmission|default:"N/A" }}</li>
+      <li class="list-group-item"><strong>Fuel Type:</strong> {{ car.fuel_type|default:"N/A" }}</li>
+    </ul>
+    <p>{{ car.description|linebreaks }}</p>
+
+    <!-- Inquiry Form -->
+    <h4 class="mt-4">Send Inquiry</h4>
+    {% if success %}
+      <div class="alert alert-success">Your inquiry has been sent successfully!</div>
+    {% endif %}
+    <form method="post" class="mb-5">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-primary">Submit Inquiry</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

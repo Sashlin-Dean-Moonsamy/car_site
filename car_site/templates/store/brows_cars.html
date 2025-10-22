@@ -1,0 +1,28 @@
+{% extends 'store.html' %}
+{% load static %}
+{% block title %}Browse Cars{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">All Cars</h1>
+
+<div class="row">
+  {% for car in cars %}
+    <div class="col-md-4 mb-4">
+      <div class="card shadow-sm h-100">
+        {% if car.images.first %}
+          <img src="{{ car.images.first.image.url }}" class="card-img-top" alt="{{ car.title }}">
+        {% else %}
+          <img src="{% static 'images/default_car.jpg' %}" class="card-img-top" alt="No Image">
+        {% endif %}
+        <div class="card-body">
+          <h5 class="card-title">{{ car.make }} {{ car.model }} ({{ car.year }})</h5>
+          <p class="card-text text-muted">${{ car.price }}</p>
+          <a href="{% url 'car_detail' car.id %}" class="btn btn-outline-primary btn-sm">View Details</a>
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <p class="text-center text-muted">No cars available right now.</p>
+  {% endfor %}
+</div>
+{% endblock %}
