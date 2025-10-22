@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from car_site.utils.imageKit_uploader import upload_image_to_imagekit
 
 # Helper for image upload paths
 def car_image_upload_path(instance, filename):
@@ -30,11 +31,16 @@ class Car(models.Model):
 class CarImage(models.Model):
     """Stores multiple images per car."""
     car = models.ForeignKey(Car, related_name='images', on_delete=models.CASCADE)
-    image = models.ImageField(upload_to=car_image_upload_path)
+    image_url =  models.URLField(blank=True, null=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"Image for {self.car.title}"
+    
+    def save(self, *args, **kwargs):
+        if self.image_file and not self.image_url:
+            self.image_url = upload_image_to_imagekit(self.image_file, self.image_file.name)
+        super().save(*args, **kwargs)
 
 
 class Inquiry(models.Model):
