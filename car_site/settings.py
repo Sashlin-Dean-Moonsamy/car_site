@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 import os
 from pathlib import Path
+from urllib.parse import urlparse
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -74,15 +75,24 @@ WSGI_APPLICATION = 'car_site.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+# Get the DATABASE_URL from the environment
+DATABASE_URL = os.getenv('DATABASE_URL')
+
+# If the DATABASE_URL is None, you can set fallback/default values or raise an error
+if not DATABASE_URL:
+    raise ValueError("DATABASE_URL environment variable not set!")
+
+# Parse the DATABASE_URL to extract connection details
+url = urlparse(DATABASE_URL)
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DB_NAME', 'carstore_db'),
-        'USER': os.environ.get('DB_USER', 'carstore_user'),
-        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
-        'HOST': os.environ.get('DB_HOST', 'localhost'),
-        'PORT': os.environ.get('DB_PORT', '5432'),
-        'OPTIONS': {'sslmode': 'require'},  # important for Render
+        'NAME': url.path[1:],  # Remove the leading '/' from the database name
+        'USER': url.username,
+        'PASSWORD': url.password,
+        'HOST': url.hostname,
+        'PORT': url.port or 5432,  # Default PostgreSQL port if not specified
     }
 }
 
