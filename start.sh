@@ -4,8 +4,8 @@ echo "Running migrations..."
 python manage.py makemigrations
 python manage.py migrate
 
-echo "Collecting static files..."
-python manage.py collectstatic --noinput
+# echo "Collecting static files..."
+# python manage.py collectstatic --noinput
 
 echo "Creating superuser if needed..."
 python manage.py shell <<EOF
