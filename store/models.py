@@ -37,11 +37,6 @@ class CarImage(models.Model):
     def __str__(self):
         return f"Image for {self.car.title}"
     
-    def save(self, *args, **kwargs):
-        if self.image_file and not self.image_url:
-            self.image_url = upload_image_to_imagekit(self.image_file, self.image_file.name)
-        super().save(*args, **kwargs)
-
 
 class Inquiry(models.Model):
     """Stores customer inquiries or orders sent from the site."""
